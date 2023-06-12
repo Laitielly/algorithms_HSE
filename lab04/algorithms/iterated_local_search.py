@@ -5,7 +5,7 @@ from algorithms.local_search import LocalSearch
 
 
 class IteratedLocalSearch:
-    def __init__(self, distance: list[list[int]], flow: list[list[int]]) -> None:
+    def __init__(self, distance: list, flow: list) -> None:
         self.distance = distance
         self.flow = flow
         self.n = len(distance)
@@ -26,7 +26,7 @@ class IteratedLocalSearch:
             new_x[indexes[i]] = x[map[i]]
         return new_x
 
-    def calculate(self, iters) -> tuple[list[int], int]:
+    def calculate(self, iters) -> tuple:
         '''
         Алгоритм Iterated local search. 
         Для функции perturbation берется sqrt(n) элементов перестановки.

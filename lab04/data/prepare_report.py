@@ -17,19 +17,37 @@ def get_local_search(graph, keys):
     way = []
     targets = []
 
-    for classes in [LocalSearch, IteratedLocalSearch]:
-        for i in keys:
-            a = classes(graph[i]['distance'], graph[i]['stream'])
+    for i in keys:
+        a = LocalSearch(graph[i]['distance'], graph[i]['stream'])
 
-            start_time = time.time()
-            result = a.calculate(100)
-            end_time = round(time.time() - start_time, 4)
+        start_time = time.time()
+        result = a.calculate()
+        end_time = round(time.time() - start_time, 4)
 
-            way.append(result[0])
-            targets.append(result[1])
-            times.append(end_time)
+        way.append(result[0])
+        targets.append(result[1])
+        times.append(end_time)
 
-        yield times, targets, way
+    return times, targets, way
+
+
+def get_ILS(graph, keys):
+    times = []
+    way = []
+    targets = []
+
+    for i in keys:
+        a = IteratedLocalSearch(graph[i]['distance'], graph[i]['stream'])
+
+        start_time = time.time()
+        result = a.calculate(100)
+        end_time = round(time.time() - start_time, 4)
+
+        way.append(result[0])
+        targets.append(result[1])
+        times.append(end_time)
+
+    return times, targets, way
 
 
 def res_table_ls(type_alg, columns, result_time, target, true_target):
@@ -43,10 +61,19 @@ def res_table_ls(type_alg, columns, result_time, target, true_target):
     return score_table
 
 
-def print_way(way, columns):
+def print_way(way, columns, typ_alg):
     for way, f in zip(way, columns):
+        result_string = ''
         print(f"{f}:")
         for i in way:
+            result_string += f"{i} "
             print(f"{i} -> ", end='')
         print(way[0])
         print()
+
+        write_to_file(f, result_string, typ_alg)
+
+
+def write_to_file(filename, way, typ_alg):
+    with open(f"{filename}_{typ_alg}.sol", 'w', encoding='utf-8') as ff:
+        ff.write(way)
