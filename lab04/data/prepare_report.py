@@ -40,7 +40,7 @@ def get_ILS(graph, keys):
         a = IteratedLocalSearch(graph[i]['distance'], graph[i]['stream'])
 
         start_time = time.time()
-        result = a.calculate(100)
+        result = a.calculate(2000)
         end_time = round(time.time() - start_time, 4)
 
         way.append(result[0])
